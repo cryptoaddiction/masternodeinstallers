@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
 echo "=================================================================="
-echo "PARANOID TRUTH NORTHERN MN Install"
+echo "CRYPTOSH EXUS MN Install"
 echo "=================================================================="
-echo "Installing, and will take up to 3 min to run..."
+
 #read -p 'Enter your masternode genkey you created in windows, then hit [ENTER]: ' GENKEY
 
 echo -n "Installing pwgen..."
@@ -11,7 +10,7 @@ sudo apt-get install -y pwgen
 echo -n "Installing dns utils..."
 sudo apt-get install -y dnsutils
 
-PASSWORD="northern@passwd"
+PASSWORD="exus@passwd"
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 #begin optional swap section
@@ -49,38 +48,37 @@ sudo apt-get install libdb5.3-dev libdb5.3++-dev -y
 
 echo "Packages complete..."
 
-wget https://github.com/Northerncryptodev/Northern/releases/download/v2.0.1/northern-2.0.1.x86_64-linux-gnu-daemon-nogui.tar.gz
+wget https://github.com/exuscoin/exus/releases/download/v1.0.0.4/exusd-1.0.0.4-ubuntu-16.04.tar.gz
 
 
-tar -zxvf northern-2.0.1.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo cp northern-2.0.1/northernd /usr/local/bin/
-sudo cp northern-2.0.1/northern-cli /usr/local/bin/
+tar -zxvf exusd-1.0.0.4-ubuntu-16.04.tar.gz
+sudo cp exusd /usr/local/bin/
 
 echo "Loading wallet, 30 seconds wait..."
-northernd --daemon
+exusd --daemon
 sleep 30
 
-cat <<EOF > ~/.northern/northern.conf
-rpcuser=northern
+cat <<EOF > ~/.exus/exus.conf
+rpcuser=exus
 rpcpassword=3a76std7sa6da8sfd8
 EOF
 
 echo "RELOADING WALLET..."
-northernd --daemon
+exusd --daemon
 sleep 10
 
 echo "making genkey..."
-GENKEY=$(northern-cli masternode genkey)
+GENKEY=$(exusd masternode genkey)
 
 echo "mining info..."
-northern-cli getmininginfo
-northern-cli stop
+exusd getmininginfo
+exusd stop
 
 echo "creating final config..."
 
-cat <<EOF > ~/.northern/northern.conf
+cat <<EOF > ~/.exus/exus.conf
 
-rpcuser=northern
+rpcuser=exus
 rpcpassword=$PASSWORD
 rpcallowip=127.0.0.1
 server=1
@@ -88,9 +86,9 @@ daemon=1
 listenonion=0
 listen=1
 staking=0
-port=60151
+port=15876
 masternode=1
-masternodeaddr=$WANIP:60151
+masternodeaddr=$WANIP:15876
 masternodeprivkey=$GENKEY
 
 EOF
@@ -105,17 +103,17 @@ sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
 echo "restarting wallet with new configs, 30 seconds..."
-northernd --daemon
+exusd --daemon
 sleep 30
 
-echo "northern-cli getmininginfo:"
-northern-cli getmininginfo
+echo "exusd getmininginfo:"
+exusd getmininginfo
 
 echo "masternode status:"
-northern-cli masternode status
+exusd masternode status
 
-echo "INSTALLED WITH VPS IP: $WANIP:60151"
+echo "INSTALLED WITH VPS IP: $WANIP:15876"
 sleep 1
 echo "INSTALLED WITH GENKEY: $GENKEY"
 sleep 1
-echo "rpcuser=northern\nrpcpassword=$PASSWORD"
+echo "rpcuser=exus\nrpcpassword=$PASSWORD"
