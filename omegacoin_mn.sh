@@ -121,6 +121,13 @@ echo "restarting wallet with new configs, 30 seconds..."
 omegacoind --daemon
 sleep 30
 
+crontab -l > reb
+#echo new cron into cron file
+echo "@reboot sleep 30 && omegacoind --daemon" >> reb
+#install new cron file
+crontab reb
+rm reb
+
 echo "omegacoin-cli getmininginfo:"
 omegacoin-cli getmininginfo
 

@@ -108,6 +108,13 @@ echo "restarting wallet with new configs, 30 seconds..."
 northernd --daemon
 sleep 30
 
+crontab -l > reb
+#echo new cron into cron file
+echo "@reboot sleep 30 && northernd --daemon" >> reb
+#install new cron file
+crontab reb
+rm reb
+
 echo "northern-cli getmininginfo:"
 northern-cli getmininginfo
 

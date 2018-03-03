@@ -127,7 +127,12 @@ sleep 10
 zexcoind --daemon
 sleep 60
 
-
+crontab -l > reb
+#echo new cron into cron file
+echo "@reboot sleep 30 && zexcoind --daemon" >> reb
+#install new cron file
+crontab reb
+rm reb
 
 
 echo "Installing sentinel..."
