@@ -110,7 +110,7 @@ sudo ufw limit ssh/tcp
 sudo ufw allow 15876/tcp
 sudo ufw logging on
 sudo ufw status
-sudo ufw enable -y
+sudo ufw enable
 echo "basic security completed..."
 
 
