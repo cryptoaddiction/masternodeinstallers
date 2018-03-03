@@ -102,6 +102,18 @@ sudo apt-get update -y
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
+#add a firewall
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow ssh/tcp
+sudo ufw limit ssh/tcp
+sudo ufw allow 15876/tcp
+sudo ufw logging on
+sudo ufw status
+sudo ufw enable -y
+echo "basic security completed..."
+
+
 echo "restarting wallet with new configs, 30 seconds..."
 exusd --daemon
 sleep 30
