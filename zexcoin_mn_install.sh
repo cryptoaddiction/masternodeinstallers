@@ -148,7 +148,7 @@ virtualenv ./venv
 
 crontab -l > zex
 #echo new cron into cron file
-echo "* * * * * cd /root/.zexcoincore && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1" >> zex
+echo "* * * * * cd /root/.zexcoincore/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1" >> zex
 #install new cron file
 crontab zex
 rm zex
